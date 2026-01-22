@@ -13,6 +13,9 @@ class Routes {
   static const splash = '/';
   static const onboarding = '/onboarding';
   static const starting = '/starting';
+  static const login = '/login';
+  static const register = '/register';
+  static const home = '/home';
 
   // Add more routes here as needed
   // Example: static const home = 'home';
@@ -51,6 +54,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: Routes.starting,
         path: Routes.starting.p,
         builder: (context, state) => const StartingScreen(),
+      ),
+      GoRoute(
+        name: Routes.login,
+        path: Routes.login.p,
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        name: Routes.register,
+        path: Routes.register.p,
+        builder: (context, state) => const RegisterPage(),
+      ),
+      GoRoute(
+        name: Routes.home,
+        path: Routes.home.p,
+        builder: (context, state) => const MainNavigation(),
       ),
     ],
   );

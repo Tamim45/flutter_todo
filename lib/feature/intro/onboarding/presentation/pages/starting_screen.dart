@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test_1/core/extensions/extensions.dart';
+import 'package:flutter_test_1/router/router.dart';
 import 'package:flutter_test_1/ui/theme.dart';
 import 'package:flutter_test_1/ui/widgets/global_button.dart';
+import 'package:go_router/go_router.dart';
 
 class StartingScreen extends StatelessWidget {
   const StartingScreen({super.key});
@@ -54,7 +56,9 @@ class StartingScreen extends StatelessWidget {
                 fontSize: 16.sp,
                 color: ColorConst.logoTextColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                context.pushNamed(Routes.login);
+              },
             ),
             28.ph,
             GlobalButton(
@@ -65,7 +69,9 @@ class StartingScreen extends StatelessWidget {
               ),
               background: Colors.transparent,
               borderColor: ColorConst.primaryColor,
-              onPressed: () {},
+              onPressed: () {
+                context.pushNamed(Routes.register);
+              },
             ),
           ],
         ),
