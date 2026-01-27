@@ -5,15 +5,24 @@ import 'package:table_calendar/table_calendar.dart';
 import 'time_picker_dialog.dart';
 
 class CustomDatePicker {
-  static Future<Map<String, dynamic>?> show(BuildContext context) async {
-    DateTime selectedDay = DateTime.now();
-    DateTime focusedDay = DateTime.now();
-    TimeOfDay? selectedTime;
+  static Future<Map<String, dynamic>?> show(
+    BuildContext context, {
+    DateTime? initialDate,
+    TimeOfDay? initialTime,
+  }) async {
+    final today = DateTime.now();
+    final firstDay = DateTime(today.year, today.month, 1);
+    final lastDay = DateTime.now().add(Duration(days: 3650));
+
+    DateTime selectedDay = initialDate ?? today;
+    DateTime focusedDay = initialDate ?? today;
+    TimeOfDay? selectedTime = initialTime;
 
     Map<String, dynamic>? result;
 
     await showDialog(
       context: context,
+      barrierColor: Colors.black.withAlpha(200),
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) {
           return Dialog(
@@ -33,10 +42,17 @@ class CustomDatePicker {
                         icon: Icon(Icons.chevron_left, color: Colors.white),
                         onPressed: () {
                           setDialogState(() {
-                            focusedDay = DateTime(
+                            final newDate = DateTime(
                               focusedDay.year,
                               focusedDay.month - 1,
                             );
+
+                            // Don't allow going before current month
+                            if (newDate.year > today.year ||
+                                (newDate.year == today.year &&
+                                    newDate.month >= today.month)) {
+                              focusedDay = newDate;
+                            }
                           });
                         },
                       ),
@@ -74,14 +90,29 @@ class CustomDatePicker {
                   ),
                   SizedBox(height: 8.h),
                   TableCalendar(
-                    firstDay: DateTime.now(),
-                    lastDay: DateTime.now().add(Duration(days: 365)),
+                    firstDay: firstDay,
+                    lastDay: lastDay,
                     focusedDay: focusedDay,
                     selectedDayPredicate: (day) => isSameDay(selectedDay, day),
+                    enabledDayPredicate: (day) {
+                      // Only enable today and future dates
+                      return day.isAfter(today.subtract(Duration(days: 1)));
+                    },
                     onDaySelected: (selected, focused) {
+                      // Only allow selecting today or future dates
+                      if (selected.isAfter(today) ||
+                          (selected.year == today.year &&
+                              selected.month == today.month &&
+                              selected.day == today.day)) {
+                        setDialogState(() {
+                          selectedDay = selected;
+                          focusedDay = focused;
+                        });
+                      }
+                    },
+                    onPageChanged: (newFocusedDay) {
                       setDialogState(() {
-                        selectedDay = selected;
-                        focusedDay = focused;
+                        focusedDay = newFocusedDay;
                       });
                     },
                     headerVisible: false,
@@ -89,6 +120,7 @@ class CustomDatePicker {
                       defaultTextStyle: TextStyle(color: Colors.white),
                       weekendTextStyle: TextStyle(color: Colors.red[300]!),
                       outsideTextStyle: TextStyle(color: Colors.grey),
+                      disabledTextStyle: TextStyle(color: Colors.grey[700]!),
                       selectedDecoration: BoxDecoration(
                         color: Color(0xFF8687E7),
                         shape: BoxShape.circle,
@@ -117,13 +149,15 @@ class CustomDatePicker {
                         onPressed: () => Navigator.pop(context),
                         child: Text(
                           'Cancel',
-                          style: TextStyle(color: Colors.white70),
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 16.sp,
+                          ),
                         ),
                       ),
                       SizedBox(width: 8.w),
                       ElevatedButton(
                         onPressed: () async {
-                          Navigator.pop(context);
                           final time = await CustomTimePicker.show(context);
                           if (time != null) {
                             selectedTime = time;
@@ -131,6 +165,7 @@ class CustomDatePicker {
                               'date': selectedDay,
                               'time': selectedTime,
                             };
+                            Navigator.pop(context);
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -138,10 +173,17 @@ class CustomDatePicker {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.r),
                           ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24.w,
+                            vertical: 12.h,
+                          ),
                         ),
                         child: Text(
                           'Choose Time',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                          ),
                         ),
                       ),
                     ],
