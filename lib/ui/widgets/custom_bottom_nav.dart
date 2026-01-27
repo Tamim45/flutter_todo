@@ -1,7 +1,8 @@
 // lib/ui/widgets/custom_bottom_nav_bar.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_test_1/ui/theme.dart';
+
+import 'bottom_sheets/add_task_bottom_sheet.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -66,29 +67,18 @@ class CustomBottomNavBar extends StatelessWidget {
             top: -28.h,
             left: MediaQuery.of(context).size.width / 2 - 32.w,
             child: GestureDetector(
-              onTap: () {
-                _showAddTaskBottomSheet(context);
-              },
+              onTap: () => AddTaskBottomSheet.show(context),
               child: Container(
                 width: 64.w,
                 height: 64.w,
                 decoration: BoxDecoration(
                   color: Color(0xFF8687E7), // Purple color from design
                   shape: BoxShape.circle,
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Color(0xFF8687E7).withOpacity(0.4),
-                  //     blurRadius: 15,
-                  //     offset: Offset(0, 4),
-                  //   ),
-                  // ],
                 ),
                 child: Icon(Icons.add, color: Colors.white, size: 32.sp),
               ),
             ),
           ),
-
-          // Home Indicator (iOS style bottom line)
         ],
       ),
     );
@@ -124,50 +114,6 @@ class CustomBottomNavBar extends StatelessWidget {
                 fontWeight: isActive ? FontWeight.w500 : FontWeight.normal,
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showAddTaskBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (context) => Container(
-        padding: EdgeInsets.all(24.w),
-        decoration: BoxDecoration(
-          color: ColorConst.backgroundColor,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: Colors.grey[600],
-                borderRadius: BorderRadius.circular(2.r),
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Text(
-              'Add Task',
-              style: TextStyle(
-                color: ColorConst.logoTextColor,
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 20.h),
-            // Add your task form here
-            Text(
-              'Task form will go here',
-              style: TextStyle(color: ColorConst.primaryTextColor),
-            ),
-            SizedBox(height: 20.h),
           ],
         ),
       ),

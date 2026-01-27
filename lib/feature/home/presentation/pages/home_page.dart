@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_test_1/core/extensions/extensions.dart';
 import 'package:flutter_test_1/ui/theme.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -31,52 +33,66 @@ class _HomePageState extends ConsumerState<HomePage> {
       _batteryLevel = batteryLevel;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConst.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: ColorConst.backgroundColor,
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        title: Text(
-          'Index',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
+
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: Column(
+            children: [
+              14.ph,
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/svgs/home_menu_icon.svg',
+                      width: 24.w,
+                      height: 24.h,
+                    ),
+                    Text(
+                      "Index",
+                      style: context.texts.subtitle1.copyWith(
+                        color: ColorConst.primaryTextColor,
+                      ),
+                    ),
+                    CircleAvatar(
+                      radius: 21.r,
+                      backgroundImage: AssetImage(
+                        'assets/images/profile_icon.png',
+                      ),
+                      backgroundColor: ColorConst.primaryColor,
+                    ),
+                  ],
+                ),
+              ),
+              84.ph,
+              SvgPicture.asset(
+                'assets/svgs/home_no_task_icon.svg',
+                width: 227.w,
+                height: 227.h,
+              ),
+              10.ph,
+              Text(
+                "What do you want to do today?",
+                style: context.texts.headline6.copyWith(
+                  color: ColorConst.primaryTextColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              10.ph,
+              Text(
+                "Tap the + button to add your tasks",
+                style: context.texts.subtitle1.copyWith(
+                  color: ColorConst.primaryTextColor,
+                ),
+              ),
+            ],
           ),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Home Page',
-              style: TextStyle(
-                color: ColorConst.primaryTextColor,
-                fontSize: 24.sp,
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Text(
-              _batteryLevel,
-              style: TextStyle(color: Colors.white, fontSize: 18.sp),
-            ),
-            SizedBox(height: 20.h),
-            ElevatedButton(
-              onPressed: _getBatteryLevel,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF8687E7),
-                padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.h),
-              ),
-              child: Text(
-                'Get Battery Level',
-                style: TextStyle(color: Colors.white, fontSize: 16.sp),
-              ),
-            ),
-          ],
         ),
       ),
     );
