@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_test_1/core/extensions/extensions.dart';
 import 'package:flutter_test_1/ui/theme.dart';
 
 import '../dialogs/date_picker_dialog.dart';
@@ -87,93 +88,78 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildTitle(),
-            SizedBox(height: 16.h),
-            _buildTaskInput(),
-            SizedBox(height: 16.h),
-            if (_showDescription) _buildDescriptionLabel(),
-            SizedBox(height: 20.h),
-            _buildActionRow(),
-            SizedBox(height: 8.h),
+            Text(
+              'Add Task',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            16.ph,
+            TextField(
+              controller: taskController,
+              style: TextStyle(color: Colors.white, fontSize: 16.sp),
+              decoration: InputDecoration(
+                hintText: 'Do math homework',
+                hintStyle: TextStyle(
+                  color: Colors.white.withOpacity(0.6),
+                  fontSize: 16.sp,
+                ),
+                filled: true,
+                fillColor: Color(0xFF2D2D2D),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 14.h,
+                ),
+              ),
+            ),
+            16.ph,
+            if (_showDescription)
+              Text(
+                'Description',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.6),
+                  fontSize: 14.sp,
+                ),
+              ),
+            20.ph,
+            Row(
+              children: [
+                _buildActionIcon(
+                  icon: Icons.access_time_outlined,
+                  onTap: _handleDateTimePicker,
+                ),
+                SizedBox(width: 16.w),
+                _buildActionIcon(
+                  icon: Icons.local_offer_outlined,
+                  onTap: () {
+                    // Handle category action
+                  },
+                ),
+                SizedBox(width: 16.w),
+                _buildActionIcon(
+                  icon: Icons.flag_outlined,
+                  onTap: () {
+                    // Handle priority action
+                  },
+                ),
+                Spacer(),
+                _buildActionIcon(
+                  icon: Icons.send_rounded,
+                  onTap: _handleSubmit,
+                  color: Color(0xFF8687E7),
+                ),
+              ],
+            ),
+            8.ph,
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildTitle() {
-    return Text(
-      'Add Task',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 20.sp,
-        fontWeight: FontWeight.w600,
-      ),
-    );
-  }
-
-  Widget _buildTaskInput() {
-    return TextField(
-      controller: taskController,
-      style: TextStyle(color: Colors.white, fontSize: 16.sp),
-      decoration: InputDecoration(
-        hintText: 'Do math homework',
-        hintStyle: TextStyle(
-          color: Colors.white.withOpacity(0.6),
-          fontSize: 16.sp,
-        ),
-        filled: true,
-        fillColor: Color(0xFF2D2D2D),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 14.h,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDescriptionLabel() {
-    return Text(
-      'Description',
-      style: TextStyle(
-        color: Colors.white.withOpacity(0.6),
-        fontSize: 14.sp,
-      ),
-    );
-  }
-
-  Widget _buildActionRow() {
-    return Row(
-      children: [
-        _buildActionIcon(
-          icon: Icons.access_time_outlined,
-          onTap: _handleDateTimePicker,
-        ),
-        SizedBox(width: 16.w),
-        _buildActionIcon(
-          icon: Icons.local_offer_outlined,
-          onTap: () {
-            // Handle category action
-          },
-        ),
-        SizedBox(width: 16.w),
-        _buildActionIcon(
-          icon: Icons.flag_outlined,
-          onTap: () {
-            // Handle priority action
-          },
-        ),
-        Spacer(),
-        _buildActionIcon(
-          icon: Icons.send_rounded,
-          onTap: _handleSubmit,
-          color: Color(0xFF8687E7),
-        ),
-      ],
     );
   }
 
@@ -186,11 +172,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(8.w),
-        child: Icon(
-          icon,
-          color: color ?? Colors.white,
-          size: 24.sp,
-        ),
+        child: Icon(icon, color: color ?? Colors.white, size: 24.sp),
       ),
     );
   }

@@ -92,6 +92,7 @@ class CustomDatePicker {
                   TableCalendar(
                     firstDay: firstDay,
                     lastDay: lastDay,
+                    weekendDays: [DateTime.friday, DateTime.saturday],
                     focusedDay: focusedDay,
                     selectedDayPredicate: (day) => isSameDay(selectedDay, day),
                     enabledDayPredicate: (day) {
